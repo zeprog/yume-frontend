@@ -1,18 +1,46 @@
+// import React from 'react';
+
+// interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+//   value: string;
+//   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+//   theme?: string;
+// }
+
+// const InputField: React.FC<InputFieldProps> = ({ value, onChange, className, theme, ...props }) => (
+//   <input
+//     value={value}
+//     onChange={onChange}
+//     className={`w-full p-3 rounded-md shadow-md outline-none ${className} ${theme === 'light' ? 'text-gray-800' : 'text-gray-100 bg-gray-700'}`}
+//     {...props}
+//   />
+// );
+
+// export default InputField;
+
 import React from 'react';
 
-interface InputFieldProps {
+interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder: string;
+  theme?: 'light' | 'dark';
 }
 
-const InputField: React.FC<InputFieldProps> = ({ value, onChange, placeholder }) => (
+const InputField: React.FC<InputFieldProps> = ({
+  value,
+  onChange,
+  className = '',
+  theme = 'light',
+  ...props
+}) => (
   <input
-    type="text"
     value={value}
     onChange={onChange}
-    placeholder={placeholder}
-    className="w-full p-3 rounded-md text-gray-800 shadow-md focus:ring-2 focus:ring-blue-500"
+    className={`w-full p-3 rounded-md shadow-md outline-none focus:ring-2 ${
+      theme === 'light'
+        ? 'bg-white text-gray-800 focus:ring-blue-500'
+        : 'bg-gray-600 text-gray-100 focus:ring-yellow-400'
+    } ${className}`}
+    {...props}
   />
 );
 
