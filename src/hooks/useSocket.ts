@@ -1,5 +1,4 @@
-// src/hooks/useSocket.ts
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { socketService } from '../services/socketService';
 
 export const useSocket = (serverUrl: string) => {
@@ -11,13 +10,17 @@ export const useSocket = (serverUrl: string) => {
     };
   }, [serverUrl]);
 
-  const sendMessage = (event: string, data: any) => {
+  const sendMessage = useCallback((event: string, data: any) => {
     socketService.sendMessage(event, data);
-  };
+  }, []);
 
-  const onMessage = (event: string, callback: (data: any) => void) => {
+  const onMessage = useCallback((event: string, callback: (data: any) => void) => {
     socketService.onMessage(event, callback);
-  };
+  }, []);
 
-  return { sendMessage, onMessage };
+  const offMessage = useCallback((event: string, callback: (data: any) => void) => {
+    socketService.offMessage(event, callback);
+  }, []);
+
+  return { sendMessage, onMessage, offMessage };
 };

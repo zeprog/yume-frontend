@@ -17,6 +17,8 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage, theme = 'lig
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(e.key === 'Enter');
+    
     if (e.key === 'Enter') {
       handleSendMessage();
     }
@@ -27,7 +29,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage, theme = 'lig
       <InputField
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        onKeyDown={handleKeyPress}
+        onKeyDown={(e) => handleKeyPress(e)}
         placeholder="Type your message..."
         className="flex-grow"
         theme={theme}

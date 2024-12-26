@@ -1,21 +1,3 @@
-// import React from 'react';
-
-// interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-//   label: string;
-//   color?: string; // Опциональный цвет
-// }
-
-// const Button: React.FC<ButtonProps> = ({ label, color, className, ...props }) => (
-//   <button
-//     className={`py-3 px-4 rounded-md font-medium transition-transform transform hover:scale-105 ${color || 'bg-blue-600 text-white'} ${className}`}
-//     {...props}
-//   >
-//     {label}
-//   </button>
-// );
-
-// export default Button;
-
 import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
