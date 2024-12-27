@@ -2,8 +2,10 @@ import { create } from 'zustand';
 
 export interface RoomMessage {
   sender?: string;
-  message: string;
-  type?: 'notification' | 'message'; 
+  message?: string;
+  type?: 'notification' | 'message';
+  timestamp?: number; 
+  content?: string;
 }
 
 interface RoomState {
@@ -32,7 +34,7 @@ const useRoomStore = create<RoomState>((set) => ({
     set({
       participants: [],
       messages: [],
-    }),
+    }),   
 }));
 
 export default useRoomStore;
