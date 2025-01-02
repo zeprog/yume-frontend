@@ -7,15 +7,16 @@ import { useParams } from 'react-router-dom';
 
 interface SettingsButtonProps {
   onLeaveRoom: () => void;
+  className?: string;
 }
 
-const SettingsButton: React.FC<SettingsButtonProps> = ({ onLeaveRoom }) => {
-  const { roomId } = useParams()
+const SettingsButton: React.FC<SettingsButtonProps> = ({ onLeaveRoom, className }) => {
+  const { roomId } = useParams();
   const { theme, nickname, setTheme, setNickname } = useSettingsStore();
   const { sendMessage, offMessage } = useSocket('http://localhost:3000');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newNickname, setNewNickname] = useState(nickname);
-  const addMessage = useRoomStore((state) => state.addMessage); 
+  const addMessage = useRoomStore((state) => state.addMessage);
 
   useEffect(() => {
     setNewNickname(nickname);
@@ -26,28 +27,24 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ onLeaveRoom }) => {
       alert('Room ID and nickname must not be empty.');
       return;
     }
-  
+
     const oldNickname = nickname;
-    console.log(`[CLIENT] Changing nickname from "${oldNickname}" to "${newNickname}"`);
-  
     sendMessage('updateNickname', { roomId, nickname: newNickname });
-  
+
     const handleNicknameUpdated = (data: { nickname: string }) => {
-      console.log(`[CLIENT] Nickname updated on server: ${data.nickname}`);
       setNickname(data.nickname);
-  
       const systemMessage: RoomMessage = {
         type: 'notification',
         content: `${oldNickname} сменил ник на ${data.nickname}.`,
       };
       addMessage(systemMessage);
     };
-  
+
     offMessage('nickname-updated', handleNicknameUpdated);
-  };  
+  };
 
   return (
-    <div className="absolute top-4 right-4">
+    <div className={className}>
       <button
         onClick={() => setIsModalOpen(true)}
         className="bg-yellow-500 text-gray-900 rounded-full p-2 hover:bg-yellow-600 transition focus:outline-none"
@@ -89,7 +86,7 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ onLeaveRoom }) => {
             </button>
           </div>
           <button
-            onClick={onLeaveRoom} // Выход из комнаты
+            onClick={onLeaveRoom}
             className="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md"
           >
             Leave Room

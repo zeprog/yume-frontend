@@ -4,7 +4,6 @@ import useRoomStore from '../store/useRoomStore';
 import useSettingsStore from '../store/useSettingsStore';
 import { useSocket } from '../hooks/useSocket';
 import Chat from '../components/Chat/Chat';
-import SettingsButton from '../components/Chat/SettingsButton';
 
 const Room: React.FC = () => {
   const { roomId } = useParams<{ roomId: string }>();
@@ -44,48 +43,28 @@ const Room: React.FC = () => {
   const leaveRoom = () => {
     sendMessage('leaveRoom', { roomId });
     clearRoom();
-  }
-
-  useEffect(() => {
-    onMessage('error', (error) => {
-      console.error('Socket error:', error.message);
-      navigate('/');
-    });
-  }, [onMessage, navigate]);
+    navigate('/');
+  };
 
   const handleSendMessage = (message: string) => {
     sendMessage('sendMessage', { roomId, message: message.trim() });
   };
 
   return (
-    <div className={`min-h-screen flex flex-col ${
+    <div className={`h-screen flex ${
       theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'
     }`}>
-      <header className="p-4 border-b border-gray-700 flex items-center justify-between">
+      <Chat theme={theme} messages={messages} onSendMessage={handleSendMessage} onLeaveRoom={leaveRoom} />
+      {/* Video Section */}
+      <div
+        className={`flex-grow flex items-center justify-center ${
+          theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+        }`}
+      >
         <h1 className="text-3xl font-bold">
-          Room: <span className="text-yellow-500">{roomId}</span>
+          Video Space <span className="text-yellow-500">({roomId})</span>
         </h1>
-        <SettingsButton onLeaveRoom={leaveRoom} />
-      </header>
-      <main className="flex flex-grow">
-        <Chat theme={theme} messages={messages} onSendMessage={handleSendMessage} />
-        <div
-          className={`flex-grow p-6 ${
-            theme === 'dark'
-              ? 'bg-gray-800 border-l border-gray-700'
-              : 'bg-white border-l border-gray-300'
-          }`}
-        >
-          <h2 className="text-2xl font-bold mb-4">Participants</h2>
-          <ul className="space-y-2">
-            {participants.map((participant) => (
-              <li key={participant} className="text-lg font-medium text-yellow-400">
-                {participant}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </main>
+      </div>
     </div>
   );
 };
